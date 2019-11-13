@@ -1,23 +1,40 @@
 defmodule Stein.Phoenix.Views.FormView do
   @moduledoc """
-  Helper functions for generating AdminLTE forms
+  Helper functions for generating bootstrap forms
   """
 
   use Phoenix.HTML
+
+  @doc """
+  Label helper to optionally override the label text
+  """
+  def field_label(form, field, opts) do
+    case Keyword.get(opts, :label) do
+      nil ->
+        label(form, field, class: "col-md-3")
+
+      text ->
+        label(form, field, text, class: "col-md-3")
+    end
+  end
 
   @doc """
   Generate a text field, styled properly
   """
   def text_field(form, field, opts \\ [], dopts \\ []) do
     opts = Keyword.merge(opts, dopts)
-    text_opts = Keyword.take(opts, [:value, :rows])
+    text_opts = Keyword.take(opts, [:type, :value, :autofocus])
 
-    content_tag(:div, class: form_group_classes(form, field)) do
+    content_tag(:div, class: "form-group row") do
       [
-        label(form, field, class: "col-md-4"),
-        content_tag(:div, class: "col-md-8") do
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
           [
-            text_input(form, field, Keyword.merge([class: "form-control"], text_opts)),
+            text_input(
+              form,
+              field,
+              Keyword.merge([class: form_control_classes(form, field)], text_opts)
+            ),
             error_tag(form, field),
             Keyword.get(opts, :do, "")
           ]
@@ -33,12 +50,16 @@ defmodule Stein.Phoenix.Views.FormView do
     opts = Keyword.merge(opts, dopts)
     text_opts = Keyword.take(opts, [:value, :rows])
 
-    content_tag(:div, class: form_group_classes(form, field)) do
+    content_tag(:div, class: "form-group row") do
       [
-        label(form, field, class: "col-md-4"),
-        content_tag(:div, class: "col-md-8") do
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
           [
-            password_input(form, field, Keyword.merge([class: "form-control"], text_opts)),
+            password_input(
+              form,
+              field,
+              Keyword.merge([class: form_control_classes(form, field)], text_opts)
+            ),
             error_tag(form, field),
             Keyword.get(opts, :do, "")
           ]
@@ -54,21 +75,16 @@ defmodule Stein.Phoenix.Views.FormView do
     opts = Keyword.merge(opts, dopts)
     number_opts = Keyword.take(opts, [:placeholder, :min, :max])
 
-    label =
-      case Keyword.get(opts, :label) do
-        nil ->
-          label(form, field, class: "col-md-4")
-
-        text ->
-          label(form, field, text, class: "col-md-4")
-      end
-
-    content_tag(:div, class: form_group_classes(form, field)) do
+    content_tag(:div, class: "form-group row") do
       [
-        label,
-        content_tag(:div, class: "col-md-8") do
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
           [
-            number_input(form, field, Keyword.merge([class: "form-control"], number_opts)),
+            number_input(
+              form,
+              field,
+              Keyword.merge([class: form_control_classes(form, field)], number_opts)
+            ),
             error_tag(form, field),
             Keyword.get(opts, :do, "")
           ]
@@ -84,12 +100,16 @@ defmodule Stein.Phoenix.Views.FormView do
     opts = Keyword.merge(opts, dopts)
     textarea_opts = Keyword.take(opts, [:value, :rows])
 
-    content_tag(:div, class: form_group_classes(form, field)) do
+    content_tag(:div, class: "form-group row") do
       [
-        label(form, field, class: "col-md-4"),
-        content_tag(:div, class: "col-md-8") do
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
           [
-            textarea(form, field, Keyword.merge([class: "form-control"], textarea_opts)),
+            textarea(
+              form,
+              field,
+              Keyword.merge([class: form_control_classes(form, field)], textarea_opts)
+            ),
             error_tag(form, field),
             Keyword.get(opts, :do, "")
           ]
@@ -104,11 +124,11 @@ defmodule Stein.Phoenix.Views.FormView do
   def checkbox_field(form, field, opts \\ [], dopts \\ []) do
     opts = Keyword.merge(opts, dopts)
 
-    content_tag(:div, class: "checkbox form-group") do
-      content_tag(:div, class: "col-md-8 col-md-offset-4") do
+    content_tag(:div, class: "form-group form-check row") do
+      content_tag(:div, class: "col-md-9 offset-md-3") do
         [
           label(form, field) do
-            [checkbox(form, field), " ", opts[:label]]
+            [checkbox(form, field, class: "form-check-input"), " ", opts[:label]]
           end,
           error_tag(form, field),
           Keyword.get(opts, :do, "")
@@ -117,13 +137,70 @@ defmodule Stein.Phoenix.Views.FormView do
     end
   end
 
-  defp form_group_classes(form, field) do
+  @doc """
+  Generate a file field, styled properly
+  """
+  def file_field(form, field, opts \\ [], dopts \\ []) do
+    opts = Keyword.merge(opts, dopts)
+
+    content_tag(:div, class: "form-group row") do
+      [
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
+          [
+            file_input(form, field, class: form_control_classes(form, field)),
+            error_tag(form, field),
+            Keyword.get(opts, :do, "")
+          ]
+        end
+      ]
+    end
+  end
+
+  @doc """
+  Generate a select field, styled properly
+  """
+  def select_field(form, field, opts \\ [], dopts \\ []) do
+    opts = Keyword.merge(opts, dopts)
+    select_opts = Keyword.take(opts, [:prompt])
+
+    content_tag(:div, class: "form-group row") do
+      [
+        field_label(form, field, opts),
+        content_tag(:div, class: "col-md-9") do
+          [
+            select(
+              form,
+              field,
+              opts[:options],
+              Keyword.merge([class: form_control_classes(form, field)], select_opts)
+            ),
+            error_tag(form, field),
+            Keyword.get(opts, :do, "")
+          ]
+        end
+      ]
+    end
+  end
+
+  def submit_button(text, dopts \\ []) do
+    content_tag(:div, class: "form-group row") do
+      content_tag(:div, class: "col-md-9 offset-md-3") do
+        [
+          submit(text, class: "btn btn-primary"),
+          Keyword.get(dopts, :do, nil)
+        ]
+      end
+    end
+  end
+
+  defp form_control_classes(form, field) do
     case Keyword.has_key?(form.errors, field) do
       true ->
-        "form-group has-error"
+        "form-control is-invalid"
 
       false ->
-        "form-group"
+        "form-control"
     end
   end
 
