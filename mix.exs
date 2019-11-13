@@ -29,6 +29,7 @@ defmodule SteinPhoenix.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false},
       {:phoenix_html, "~> 2.13"}
     ]
   end
