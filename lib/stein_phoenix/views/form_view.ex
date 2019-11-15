@@ -188,7 +188,7 @@ defmodule Stein.Phoenix.Views.FormView do
       content_tag(:div, class: "col-md-9 offset-md-3") do
         [
           submit(text, class: "btn btn-primary"),
-          Keyword.get(dopts, :do, nil)
+          Keyword.get(dopts, :do, "")
         ]
       end
     end
