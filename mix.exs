@@ -30,7 +30,7 @@ defmodule SteinPhoenix.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:phoenix_html, "~> 3.0.0"}
+      {:phoenix_html, "~> 3.0"}
     ]
   end
 
