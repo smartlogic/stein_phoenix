@@ -4,8 +4,8 @@ defmodule SteinPhoenix.MixProject do
   def project do
     [
       app: :stein_phoenix,
-      version: "0.2.1",
-      elixir: "~> 1.8",
+      version: "0.4.0",
+      elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       source_url: "https://github.com/smartlogic/stein",
       homepage_url: "https://github.com/smartlogic/stein",
@@ -30,7 +30,7 @@ defmodule SteinPhoenix.MixProject do
   defp deps do
     [
       {:ex_doc, "~> 0.19", only: :dev, runtime: false},
-      {:phoenix_html, "~> 2.13"}
+      {:phoenix_html, "~> 4.0"}
     ]
   end
 
