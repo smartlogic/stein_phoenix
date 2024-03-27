@@ -19,7 +19,7 @@ defmodule Stein.Phoenix.Views.TableHelper do
       <% end %>
   """
 
-  alias Phoenix.HTML.Tag
+  alias PhoenixHTMLHelpers.Tag
 
   @doc """
   Top level wrapper for a table

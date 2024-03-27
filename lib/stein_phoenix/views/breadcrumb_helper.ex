@@ -9,7 +9,7 @@ defmodule Stein.Phoenix.Views.BreadcrumbHelper do
       <% end %>
   """
 
-  alias Phoenix.HTML.Tag
+  alias PhoenixHTMLHelpers.Tag
 
   @doc """
   Wrapper for `breadcrumb/1` and `breadcrumb/2`

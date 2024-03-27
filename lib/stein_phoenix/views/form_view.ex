@@ -3,7 +3,7 @@ defmodule Stein.Phoenix.Views.FormView do
   Helper functions for generating bootstrap forms
   """
 
-  use Phoenix.HTML
+  use PhoenixHTMLHelpers
 
   @doc """
   Label helper to optionally override the label text
